@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AgendaFormRequest;
 use App\Http\Requests\UpdateAgendaFormRequest;
 use App\Models\Agenda;
+use App\Models\Profissional;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 
 class AgendaController extends Controller
@@ -146,26 +149,43 @@ class AgendaController extends Controller
 
     public function agendaTimeProfissional(AgendaFormRequest $request)
     {
-        $agenda = Agenda::where('data_hora', '=', $request->data_hora)->where('profissional_id', '=', $request->profissional_id)->get();
-
-        if (count($agenda) > 0) {
-            return response()->json([
-                "status" => false,
-                "message" => "Horario ja cadastrado",
-                "data" => $agenda
-            ], 200);    
-        } else {
-
-            $agenda = Agenda::create([
-                'profissional_id' => $request->profissional_id,
-                'data_hora' => $request->data_hora
-            ]);
-            return response()->json([
-                "status" => true,
-                "message" => "Agendado com sucesso",
-                "data" => $agenda
-            ], 200);
-        }
+            $dataHoraAgendamento = new DateTime($request->data_hora);
+            $dataAtual = Carbon::now('America/Sao_Paulo');
+            if ($dataHoraAgendamento < $dataAtual) {
+                return response()->json([
+                    "status" => false,
+                    "message" => "Não é possível cadastrar um horário antes do dia atual e horario atual"
+                ], 400);
+            }
+        
+            $horarioJaCadastrado = Agenda::where('data_hora', $request->data_hora)
+                ->where('profissional_id', $request->profissional_id)
+                ->exists();
+            if ($horarioJaCadastrado) {
+                return response()->json([
+                    "status" => false,
+                    "message" => "Horário já cadastrado"
+                ], 400);
+            }
+        
+            $profissional = Profissional::find($request->profissional_id);
+            if (isset($profissional)) {
+                $agendas = Agenda::create([
+                    'profissional_id' => $request->profissional_id,
+                    'data_hora' => $request->data_hora
+                ]);
+                return response()->json([
+                    "status" => true,
+                    "message" => "Agendamento cadastrado com sucesso",
+                    "data" => $agendas
+                ], 200);
+            }
+            if (!isset($profissional)) {
+                return response()->json([
+                    "status" => false,
+                    "message" => "Profissional não encontrado"
+                ], 200);
+            }
     }
     public function agendaFindTimeProfissional(Request $request)
     {
