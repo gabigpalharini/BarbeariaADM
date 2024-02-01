@@ -125,9 +125,43 @@ Route::delete('payment/delete/{id}', [PagamentoController::class, 'pagamentoExcl
 
 Route::post('professional/client', [ClienteController::class, 'cliente']);
 
+Route::get('professional/client/find/{id}', [ClienteController::class, 'clienteId']);
+
+Route::post('professional/client/name', [ClienteController::class, 'clienteNome']);
+
+Route::post('professional/client/cpf', [ClienteController::class, 'clienteCpf']);
+
+Route::post('professional/client/cellphone', [ClienteController::class, 'clienteCelular']);
+
+Route::post('professional/client/email', [ClienteController::class, 'clienteEmail']);
+
+Route::get('professional/client/all', [ClienteController::class, 'clienteRetornar']);
+
+Route::delete('professional/client/delete/{id}', [ClienteController::class, 'clienteExcluir']);
+
+Route::put('professional/client/update', [ClienteController::class, 'clienteUpdate']);
+
+Route::post('professional/client/restore', [ClienteController::class, 'clienteRestaurar']);
+
 //Agenda--Profissional
 
+Route::post('professional/schedule', [AgendaController::class, 'agenda']);
+
+Route::get('professional/schedule/all', [AgendaController::class, 'agendaRetornar']);
+
+Route::delete('professional/schedule/delete/{id}', [AgendaController::class, 'agendaExcluir']);
+
+Route::put('professional/schedule/update', [AgendaController::class, 'agendaUpdate']);
+
 Route::post('professional/schedule/time', [AgendaController::class, 'agendaTimeProfissional']);
+
+Route::post('professional/schedule/find', [AgendaController::class, 'agendaFind']);
+
+Route::post('professional/schedule/date', [AgendaController::class, 'agendaFindData']);
+
+Route::get('professional/schedule/find/{id}', [AgendaController::class, 'agendaId']);
+
+Route::post('professional/schedule/find/time/professional', [AgendaController::class, 'agendaFindTimeProfissional']);
 
 
 //------------------------------------------- ADMNISTRADOR -------------------------------------------//
@@ -243,6 +277,10 @@ Route::post('adm/payment', [PagamentoController::class, 'pagamento']);
 Route::put('adm/payment/update', [PagamentoController::class, 'pagamentoUpdate']);
 
 Route::get('adm/payment/all', [PagamentoController::class, 'pagamentoRetornar']);
+
+Route::get('adm/payment/all/active', [PagamentoController::class, 'pagamentoRetornarAtivos']);
+
+Route::get('adm/payment/all/inactive', [PagamentoController::class, 'pagamentoRetornarInativos']);
 
 Route::post('adm/payment/name', [PagamentoController::class, 'pagamentoNome']);
 

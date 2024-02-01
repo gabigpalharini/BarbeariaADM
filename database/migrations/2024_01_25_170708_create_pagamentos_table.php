@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('pagamentos', function (Blueprint $table) {
             $table->id();
-            $table->string('nome', 120)->nullable(false);
+            $table->string('nome', 120)->unique()->nullable(false);
             $table->integer('taxa')->nullable(true);
             $table->string('status', 15)->nullable(false);
             $table->timestamps();
