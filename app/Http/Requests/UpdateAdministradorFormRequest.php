@@ -25,8 +25,8 @@ class UpdateAdministradorFormRequest extends FormRequest
     {
         return [
             'nome'=>'max:120|min:5',
-            'cpf'=>'max:11|min:11|unique:clientes,cpf,' . $this -> id,
-            'email'=>'max:120|email:rfc|unique:clientes,email,' . $this -> id,
+            'cpf'=>'max:11|min:11|unique:administrador,cpf,' . $this -> id,
+            'email'=>'max:120|email:rfc|unique:administrador,email,' . $this -> id,
         ];
     }
     public function failedValidation(Validator $validator){
