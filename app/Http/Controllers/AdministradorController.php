@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AdministradorFormRequest;
 use App\Http\Requests\UpdateAdministradorFormRequest;
 use App\Models\Administrador;
-use App\Models\Profissional;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -80,7 +79,7 @@ class AdministradorController extends Controller
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'Profissional não encontrado'
+                'message' => 'Administrador não encontrado'
             ]);
         }
     }

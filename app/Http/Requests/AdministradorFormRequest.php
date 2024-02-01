@@ -25,8 +25,8 @@ class AdministradorFormRequest extends FormRequest
     {
         return [
             'nome'=>'required|max:120|min:5',
-            'cpf'=>'required|max:11|min:11|unique:clientes,cpf',
-            'email'=>'required|max:120|email:rfc|unique:clientes,email',
+            'cpf'=>'required|max:11|min:11|unique:administradors,cpf',
+            'email'=>'required|max:120|email:rfc|unique:administradors,email',
             'senha'=>'required',
         ];
     }
