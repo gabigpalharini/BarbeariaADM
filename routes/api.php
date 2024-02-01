@@ -111,6 +111,10 @@ Route::put('payment/update', [PagamentoController::class, 'pagamentoUpdate']);
 
 Route::get('payment/all', [PagamentoController::class, 'pagamentoRetornar']);
 
+Route::get('payment/all/active', [PagamentoController::class, 'pagamentoRetornarAtivos']);
+
+Route::get('payment/all/inactive', [PagamentoController::class, 'pagamentoRetornarInativos']);
+
 Route::post('payment/name', [PagamentoController::class, 'pagamentoNome']);
 
 Route::delete('payment/delete/{id}', [PagamentoController::class, 'pagamentoExcluir']);

@@ -86,4 +86,20 @@ class PagamentoController extends Controller
             'message' => 'Pagamento atualizado'
         ]);
     }
+        public function pagamentoRetornarAtivos()
+        {
+            $pagamento = Pagamento::where('status', 'ativo')->get();
+            return response()->json([
+                'status' => true,
+                'data' => $pagamento
+            ]);
+        }
+        public function pagamentoRetornarInativos()
+        {
+            $pagamento = Pagamento::where('status', 'inativo')->get();
+            return response()->json([
+                'status' => true,
+                'data' => $pagamento
+            ]);
+    }
 }
