@@ -13,7 +13,7 @@ class ProfissionalController extends Controller
 {
     public function profissional(ProfissionalFormRequest $request){
         $profissional = Profissional::create([
-            'nome' => $request->nome,
+            'name' => $request->name,
             'celular' => $request->celular,
             'email' => $request->email,
             'cpf' => $request->cpf,
@@ -26,7 +26,7 @@ class ProfissionalController extends Controller
             'bairro' => $request->bairro,
             'cep' => $request->cep,
             'complemento' => $request->complemento,
-            'senha' => $request->senha,
+            'passsword' => $request->password,
             'salario' => $request->salario,
             
         ]);
@@ -50,7 +50,7 @@ class ProfissionalController extends Controller
         ]);
     }
     public function profissionalNome(Request $request){
-        $profissional = Profissional::where('nome', 'like', '%' . $request->nome . '%')->get();
+        $profissional = Profissional::where('name', 'like', '%' . $request->name . '%')->get();
         if(count($profissional) > 0){
             return response()->json([
                 'status' => true,
@@ -134,13 +134,13 @@ class ProfissionalController extends Controller
             if ($profissional) {
                 $novaSenha = $profissional->cpf;
                 $profissional->update([
-                    'senha' => Hash::make($novaSenha),
+                    'password' => Hash::make($novaSenha),
                     'updated_at' => now()
                 ]);
                 return response()->json([
                     'status' => true,
-                    'message' => 'Senha redefinida',
-                    'nova_senha' => Hash::make($novaSenha)
+                    'message' => 'password redefinida',
+                    'nova_password' => Hash::make($novaSenha)
                 ]);
             } else {
                 return response()->json([
@@ -157,8 +157,8 @@ class ProfissionalController extends Controller
                     'message' => "Profissional não encontrado"
                 ]);
             }
-            if(isset($request->nome)){
-                $profissional->nome = $request->nome;
+            if(isset($request->name)){
+                $profissional->name = $request->name;
             }
             if(isset($request->celular)){
                 $profissional->celular = $request->celular;
@@ -196,8 +196,8 @@ class ProfissionalController extends Controller
             if(isset($request->complemento)){
                 $profissional->complemento = $request->complemento;
             }
-            if(isset($request->senha)){
-                $profissional->senha = $request->senha;
+            if(isset($request->password)){
+                $profissional->password = $request->password;
             }
             if(isset($request->salario)){
                 $profissional->salario = $request->salario;

@@ -10,21 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AdministradorController extends Controller
 {
-    public function administrador(AdministradorFormRequest $request)
-    {
-        $administrador = Administrador::create([
-            'nome' => $request->nome,
-            'cpf' => $request->cpf,
-            'email' => $request->email,
-            'senha' => $request->senha,
-
-        ]);
-        return response()->json([
-            "sucess" => true,
-            "message" => "Registro de administrador bem-sucedido",
-            "data" => $administrador
-        ]);
-    }
+   
     public function administradorCpf(Request $request)
     {
         $administrador = Administrador::where('cpf', 'like', '%' . $request->cpf . '%')->get();
@@ -68,13 +54,13 @@ class AdministradorController extends Controller
         if ($administrador) {
             $novaSenha = $administrador->cpf;
             $administrador->update([
-                'senha' => Hash::make($novaSenha),
+                'password' => Hash::make($novaSenha),
                 'updated_at' => now()
             ]);
             return response()->json([
                 'status' => true,
                 'message' => 'Senha redefinida',
-                'nova_senha' => Hash::make($novaSenha)
+                'nova_password' => Hash::make($novaSenha)
             ]);
         } else {
             return response()->json([
@@ -92,8 +78,8 @@ class AdministradorController extends Controller
                 'message' => "Administrador não encontrado"
             ]);
         }
-        if (isset($request->nome)) {
-            $administrador->nome = $request->nome;
+        if (isset($request->name)) {
+            $administrador->name = $request->name;
         }
         if (isset($request->cpf)) {
             $administrador->cpf = $request->cpf;
@@ -101,13 +87,66 @@ class AdministradorController extends Controller
         if (isset($request->email)) {
             $administrador->email = $request->email;
         }
-        if (isset($request->senha)) {
-            $administrador->senha = $request->senha;
+        if (isset($request->password)) {
+            $administrador->password = $request->password;
         }
         $administrador->update();
         return response()->json([
             'status' => true,
             'message' => 'Administrador atualizado'
         ]);
+    }
+
+
+    public function store(Request $request)
+    {
+      try{
+        $data = $request->all();
+        $data['password'] = Hash::make($request->password);
+
+        $response = Administrador::create($data)->createToken($request->server('HTTP_USER_AGENT'))->plainTextToken;
+
+        return response()->json([
+            'status'=>'success',
+            'message'=> "Admin cadastrado com sucesso.",
+            'token'=> $response
+        ], 200);
+      } catch(\Throwable $th){
+         return response()->json([
+            'status'=>false,
+            'message'=> $th->getMessage() 
+         ], 500);
+      }
+    }
+    public function login(Request $request){
+        try{
+          if (Auth::guard('admins')->attempt([
+            'email' => $request->email,
+            'password' => $request->password
+          ])) {
+            $user = Auth::guard('admins')->user();
+            $token = $user->createToken($request->server('HTTP_USER_AGENT',['admins']))->plainTextToken;
+
+            return response()->json([
+                'status' => true,
+                'message' => 'login efetuado com sucesso', 
+                'token' => $token
+            ]);
+          }else{
+            return response()->json([
+                'status' => false,
+                'message' => 'credenciais incorretass', 
+            ]);
+          }
+        }catch(\Throwable $th){
+            return response()->json([
+            'status'=>false,
+            'message'=> $th->getMessage() 
+            ], 500);
+        }
+    }
+
+    public function verificarUsuarioLogado(){
+        return Auth::user();
     }
 }

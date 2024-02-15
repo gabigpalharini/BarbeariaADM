@@ -14,7 +14,7 @@ class PagamentoController extends Controller
     public function pagamento(PagamentoFormRequest $request)
     {
         $pagamento = Pagamento::create([
-            'nome' => $request->nome,
+            'name' => $request->name,
             'taxa' => $request->taxa,
             'status' => $request->status,
         ]);
@@ -35,7 +35,7 @@ class PagamentoController extends Controller
     }
     public function pagamentoNome(Request $request)
     {
-        $pagamento = Pagamento::where('nome', 'like', '%' . $request->nome . '%')->get();
+        $pagamento = Pagamento::where('name', 'like', '%' . $request->nome . '%')->get();
         if (count($pagamento) > 0) {
             return response()->json([
                 'status' => true,
@@ -71,8 +71,8 @@ class PagamentoController extends Controller
                 'message' => "Pagamento não encontrado"
             ]);
         }
-        if (isset($request->nome)) {
-            $pagamento->nome = $request->nome;
+        if (isset($request->name)) {
+            $pagamento->name = $request->name;
         }
         if (isset($request->taxa)) {
             $pagamento->taxa = $request->taxa;

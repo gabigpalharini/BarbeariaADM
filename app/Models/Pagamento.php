@@ -11,7 +11,7 @@ class Pagamento extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nome',
+        'name',
         'taxa',
         'status',
     ];

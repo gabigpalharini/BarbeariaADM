@@ -10,7 +10,7 @@ class Profissional extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nome',
+        'name',
         'celular',
         'email',
         'cpf',
@@ -23,7 +23,7 @@ class Profissional extends Model
         'bairro',
         'cep',
         'complemento',
-        'senha',
+        'password',
         'salario',
     ];
 }
